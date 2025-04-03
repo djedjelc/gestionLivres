@@ -104,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify(bookData)
                 });
 
-
                 submitButton.textContent = "Ajouter";
                 delete submitButton.dataset.editingId;
             } else {

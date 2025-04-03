@@ -11,10 +11,10 @@
         <h1>Gestion des Livres</h1>
         
         <form id="bookForm">
-            <input type="text" id="title" placeholder="Titre" required>
-            <input type="text" id="author" placeholder="Auteur" required>
-            <textarea id="description" placeholder="Description"></textarea>
-            <input type="number" id="year" placeholder="Année de publication">
+            <input type="text" id="title" placeholder="Titre" minlength="2" maxlength="100" required>
+            <input type="text" id="author" placeholder="Auteur" minlength="2" maxlength="50" required>
+            <textarea id="description" placeholder="Description" minlength="10" maxlength="1000"></textarea>
+            <input type="number" id="year" placeholder="Année de publication" min="1000">
             <button type="submit">Ajouter</button>
         </form>
         
