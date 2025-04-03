@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Livres</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestion des Livres</h1>
+        
+        <form id="bookForm">
+            <input type="text" id="title" placeholder="Titre" required>
+            <input type="text" id="author" placeholder="Auteur" required>
+            <textarea id="description" placeholder="Description"></textarea>
+            <input type="number" id="year" placeholder="Année de publication">
+            <button type="submit">Ajouter</button>
+        </form>
+        
+        <h2>Liste des Livres</h2>
+        <ul id="bookList"></ul>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
