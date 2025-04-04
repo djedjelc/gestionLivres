@@ -2,6 +2,6 @@ require("dotenv").config();
 
 module.exports = {
     secret: process.env.JWT_SECRET,
-    expiresIn: "1h",
+    expiresIn: "24h",
     refreshTokenExpiresIn: "7d"
 };

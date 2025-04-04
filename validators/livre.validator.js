@@ -24,7 +24,7 @@ const livreSchema = Joi.object({
     description: Joi.string()
         .min(10)
         .max(1000)
-        .optional()
+        .required()
         .messages({
             'string.min': 'La description doit contenir au moins 10 caractères',
             'string.max': 'La description ne peut pas dépasser 1000 caractères'
@@ -34,12 +34,24 @@ const livreSchema = Joi.object({
         .integer()
         .min(1000)
         .max(new Date().getFullYear())
-        .optional()
+        .required()
         .messages({
             'number.base': 'L\'année doit être un nombre',
             'number.integer': 'L\'année doit être un nombre entier',
             'number.min': 'L\'année doit être supérieure à 1000',
             'number.max': 'L\'année ne peut pas être supérieure à l\'année en cours'
+        }),
+
+    imagelivre: Joi.string()
+        .optional()
+        .messages({
+            
+        }),
+
+    downloadlivre: Joi.string()
+        .optional()
+        .messages({
+            
         })
 });
 

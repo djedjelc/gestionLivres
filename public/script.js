@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const token = localStorage.getItem('token');
 
-            if (!token) {
+            if (!token || isTokenExpired(token)) {
                 window.location.href = 'login.html';
                 return;
             }
@@ -32,19 +32,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 const li = document.createElement("li");
                 li.classList.add("note");
                 li.innerHTML = `
-                    <div>
-                        <h3>${book.titre}</h3>
-                        <p><strong>Auteur :</strong> ${book.auteur}</p>
-                        <p><strong>Description :</strong> ${book.description || "Aucune description"}</p>
-                        <p><strong>Année :</strong> ${book.anneePublication || "Non précisée"}</p>
+                    <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                        <img src="${book.imagelivre}" alt="Couverture du livre" style="width: 30%;">
+                        <div>
+                            <h3>${book.titre}</h3>
+                            <p><strong>Auteur :</strong> ${book.auteur}</p>
+                            <p><strong>Description :</strong> ${book.description || "Aucune description"}</p>
+                            <p><strong>Année :</strong> ${book.anneePublication || "Non précisée"}</p>
+                        </div>
                     </div>
                     <div>
                         <button onclick="editBook('${book._id}', 
                                                   \`${encodeURIComponent(book.titre)}\`, 
                                                   \`${encodeURIComponent(book.auteur)}\`, 
-                                                  \`${encodeURIComponent(book.description || "")}\`, 
-                                                  '${book.anneePublication || ""}')">✏️</button>
+                                                  \`${encodeURIComponent(book.description)}\`, 
+                                                  '${book.anneePublication}',
+                                                  \`${encodeURIComponent(book.imagelivre)}\`,
+                                                  \`${encodeURIComponent(book.downloadlivre)}\`)">✏️</button>
                         <button onclick="deleteBook('${book._id}')">❌</button>
+                        <a style="background: #4074c3; padding: 6px 17px; border-radius: 6px;" href="${book.downloadlivre}"><i class="fas fa-download" style="color: white"></i></a>
                     </div>
                 `;
                 bookList.appendChild(li);
@@ -58,12 +64,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    window.editBook = (id, titre, auteur, description, anneePublication) => {
+    window.editBook = (id, titre, auteur, description, anneePublication, imagelivre, downloadlivre) => {
         document.getElementById("title").value = decodeURIComponent(titre);
         document.getElementById("author").value = decodeURIComponent(auteur);
         document.getElementById("description").value = decodeURIComponent(description);
         document.getElementById("year").value = anneePublication;
-
+        document.getElementById("imageLivre").value = decodeURIComponent(imagelivre);
+        document.getElementById("downloadLivre").value = decodeURIComponent(downloadlivre);
 
         const submitButton = document.querySelector("#bookForm button");
         submitButton.textContent = "Modifier";
@@ -76,6 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const author = document.getElementById("author").value;
         const description = document.getElementById("description").value;
         const year = document.getElementById("year").value;
+        const imageLivre = document.getElementById("imageLivre").value;
+        const downloadLivre = document.getElementById("downloadLivre").value;
 
         const submitButton = e.target.querySelector("button");
         const editingId = submitButton.dataset.editingId;
@@ -84,7 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
             titre: title,
             auteur: author,
             description: description,
-            anneePublication: year ? parseInt(year) : undefined
+            anneePublication: year ? parseInt(year) : undefined,
+            imagelivre: imageLivre,
+            downloadlivre: downloadLivre
         };
 
         try {
@@ -146,4 +157,24 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     fetchBooks();
+
+    document.querySelector("#logoutBtn").addEventListener("click", function () {
+        localStorage.removeItem("token");
+        alert("Déconnexion réussie !");
+        window.location.href = "login.html";
+    });
+
+    function isTokenExpired(token) {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    
+        const parsedPayload = JSON.parse(jsonPayload);
+        const exp = parsedPayload.exp;  // L'heure d'expiration du token
+        const currentTime = Math.floor(Date.now() / 1000);  // L'heure actuelle en secondes
+    
+        return exp < currentTime;
+    }
 });
