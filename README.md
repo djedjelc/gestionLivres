@@ -1,1 +1,1 @@
-![image info]([https://github.com/djedjelc/gestionLivres/blob/main/screenshot.PNG])
+![image info](https://github.com/djedjelc/gestionLivres/blob/main/screenshot.PNG)
