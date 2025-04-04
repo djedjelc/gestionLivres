@@ -1,1 +1,1 @@
-![alt text]([Isolated.png](https://github.com/djedjelc/gestionLivres/blob/main/screenshot.PNG) "Screenshot")
+![image info]([https://github.com/djedjelc/gestionLivres/blob/main/screenshot.PNG])
